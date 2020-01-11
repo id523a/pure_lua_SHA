@@ -1,11 +1,13 @@
 -- bit32_shim - fixed the bit32 library in ComputerCraft
 
 local function conv(x)
-  if (x >= 2147483648) then
-    return x - 2147483648
-  else
-    return x
+  while (x < -2147483648) do
+    x = x + 4294967296
   end
+  while (x >= 2147483648) do
+    x = x - 4294967296
+  end
+  return x
 end
 
 local function shim_shift(func)
@@ -25,7 +27,9 @@ local function shim_accumulate(func,identity)
 end
 
 bit32_old = bit32
+
 bit32 = {
+  _BIT32_SHIM = true,
   arshift = shim_shift(bit32_old.arshift),
   band = shim_accumulate(bit32_old.band,-1),
   bnot = function(x) return bit32_old.bnot(conv(x)) end,
