@@ -49,6 +49,8 @@
 --     1     2018-10-06   First release (only SHA-2 functions)
 -----------------------------------------------------------------------------
 
+shell.run("bit32_shim")
+
 local print_debug_messages = false  -- set to true to view some messages about your system's abilities and implementation branch chosen for your system
 
 local unpack, table_concat, byte, char, string_rep, sub, gsub, gmatch, string_format, floor, ceil, math_min, math_max, tonumber, type =
@@ -2911,7 +2913,7 @@ local function hmac(hash_func, key, message)
 end
 
 
-local sha = {
+sha = {
    md5        = md5,                                                                                                                   -- MD5
    sha1       = sha1,                                                                                                                  -- SHA-1
    -- SHA2 hash functions:
@@ -2950,6 +2952,3 @@ block_size_for_HMAC = {
    [sha.sha3_384]   = (1600 - 2 * 384) / 8,
    [sha.sha3_512]   = (1600 - 2 * 512) / 8,
 }
-
-
-return sha
